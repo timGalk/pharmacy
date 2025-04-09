@@ -6,8 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Entity
 @Table(name = "medicine")
@@ -18,15 +18,20 @@ import java.util.UUID;
 public class MedicineEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
-    private String description;
-    private double price;
-    private int stockQuantity;
-    private LocalDate expirationDate;
 
+    private String description;
+
+    @Column(nullable = false)
+    private BigDecimal price;
+
+    private int stockQuantity;
+
+    private LocalDate expirationDate;
 }
 
 
