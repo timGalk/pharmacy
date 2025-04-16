@@ -4,6 +4,7 @@ import com.edu.pharmacy.service.DTO.MedicineCreateDTO;
 import com.edu.pharmacy.service.DTO.MedicineDTO;
 import com.edu.pharmacy.service.MedicineService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class MedicineController {
     }
 
     @PostMapping
-    public MedicineDTO addNewMedicine(@RequestBody MedicineCreateDTO medicine) {
+    public MedicineDTO addNewMedicine(@Validated @RequestBody MedicineCreateDTO medicine) {
         return medicineService.createMedicine(medicine);
     }
 
