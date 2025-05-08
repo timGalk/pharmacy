@@ -1,8 +1,8 @@
-package com.edu.pharmacy.service.mapper;
+package com.edu.pharmacy.mapper;
 
-import com.edu.pharmacy.repo.MedicineEntity;
-import com.edu.pharmacy.service.DTO.MedicineCreateDTO;
-import com.edu.pharmacy.service.DTO.MedicineDTO;
+import com.edu.pharmacy.entity.MedicineEntity;
+import com.edu.pharmacy.DTO.medicine.MedicineCreateDTO;
+import com.edu.pharmacy.DTO.medicine.MedicineDTO;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,10 +1,9 @@
 package com.edu.pharmacy.repo;
 
-import com.edu.pharmacy.entity.MedicineEntity;
+import com.edu.pharmacy.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MedicineRepository extends JpaRepository<MedicineEntity, Long> {
-
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
 }

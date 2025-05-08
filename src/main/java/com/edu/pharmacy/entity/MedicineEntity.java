@@ -1,4 +1,4 @@
-package com.edu.pharmacy.repo;
+package com.edu.pharmacy.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "medicine")
+@Table(name = "medicines")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
