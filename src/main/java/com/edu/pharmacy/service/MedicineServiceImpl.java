@@ -1,7 +1,7 @@
 package com.edu.pharmacy.service;
 
 import com.edu.pharmacy.entity.MedicineEntity;
-import com.edu.pharmacy.repo.MedicineRepository;
+import com.edu.pharmacy.repository.MedicineRepository;
 import com.edu.pharmacy.DTO.medicine.MedicineCreateDTO;
 import com.edu.pharmacy.DTO.medicine.MedicineDTO;
 import com.edu.pharmacy.mapper.MedicineMapper;
