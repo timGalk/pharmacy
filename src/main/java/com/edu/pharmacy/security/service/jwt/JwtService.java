@@ -13,46 +13,37 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
 import java.util.List;
-
+import java.util.stream.Collectors;
 @Service
 public class JwtService {
     private static final String ROLES_CLAIM = "roles";
-    private final Algorithm signingAlgorithm;
+    private final Algorithm algorithm;
 
-
-    public JwtService(@Value("${jwt.signing-secret}") String signingSecret) {
-        this.signingAlgorithm = Algorithm.HMAC256(signingSecret);
+    public JwtService(@Value("${jwt.signing-secret}") String secret) {
+        this.algorithm = Algorithm.HMAC256(secret);
     }
 
+    public String generateToken(AuthUser authUser) {
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + 3600000); // 1 hour
 
-    public AuthUser resolveJwtToken(String token) {
-        try {
-            JWTVerifier verifier = JWT.require(signingAlgorithm).build();
-            DecodedJWT decodedJWT = verifier.verify(token);
-
-            String userId = decodedJWT.getSubject();
-            List<Role> roles = decodedJWT.getClaim(ROLES_CLAIM).asList(Role.class);
-
-            return new AuthUser(userId, roles);
-        } catch (JWTVerificationException exception) {
-            throw new TokenAuthenticationException("JWT is not valid");
-        }
-    }
-
-    public String createJwtToken(AuthUser authUser) {
-        long nowMillis = System.currentTimeMillis();
-        Date now = new Date(nowMillis);
-        long expMillis = nowMillis + 3600000; // 1 hour validity
-        Date exp = new Date(expMillis);
-
-        List<String> roles = authUser.roles().stream().map(Role::name).toList();
+        List<String> roleNames = authUser.roles().stream().map(Enum::name).toList();
 
         return JWT.create()
-                .withSubject(authUser.userId())
-                .withClaim(ROLES_CLAIM, roles)
+                .withSubject(String.valueOf(authUser.userId()))
+                .withClaim(ROLES_CLAIM, roleNames)
                 .withIssuedAt(now)
-                .withExpiresAt(exp)
-                .sign(signingAlgorithm);
+                .withExpiresAt(expiry)
+                .sign(algorithm);
     }
 
+    public AuthUser parseToken(String token) {
+        DecodedJWT jwt = JWT.require(algorithm).build().verify(token);
+        Long userId = Long.valueOf(jwt.getSubject());
+        List<Role> roles = jwt.getClaim(ROLES_CLAIM).asList(String.class).stream()
+                .map(Role::valueOf)
+                .toList();
+
+        return new AuthUser(userId, roles);
+    }
 }
