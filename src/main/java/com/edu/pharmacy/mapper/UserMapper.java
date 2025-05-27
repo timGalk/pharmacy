@@ -87,7 +87,7 @@ public class UserMapper {
     }
 
     public AuthUser toAuthDTO(UserEntity userEntity) {
-        return new AuthUser(userEntity.getId(), userEntity.getRoles());
+        return new AuthUser(userEntity.getId(),userEntity.getEmail(), userEntity.getRoles());
     }
 
 }

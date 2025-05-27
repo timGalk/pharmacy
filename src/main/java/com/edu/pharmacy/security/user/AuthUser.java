@@ -5,4 +5,8 @@ import com.edu.pharmacy.common.Role;
 import java.util.Set;
 
 
-public record AuthUser(Long userId, Set<Role> roles) {}
+public record AuthUser(
+        Long userId,
+        String email,
+        Set<Role> roles
+) {}

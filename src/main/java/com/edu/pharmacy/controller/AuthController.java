@@ -7,14 +7,15 @@ import com.edu.pharmacy.security.dto.TokenDTO;
 import com.edu.pharmacy.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.antlr.v4.runtime.Token;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 @RequiredArgsConstructor
-public class UserController {
+@Slf4j
+public class AuthController {
     private final UserService userService;
 
     @PostMapping("/register")
@@ -23,12 +24,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-
-//    public ResponseEntity<TokenDTO> login(@RequestBody @Valid LoginDTO loginDTO) {
-//        return ResponseEntity.ok(userService.login(loginDTO));
-//    }
-    @GetMapping("/my-profile")
-    public ResponseEntity<UserDTO> getCurrentUser() {
-        return ResponseEntity.ok(userService.getCurrentUser());
+    public ResponseEntity<TokenDTO> login(@RequestBody @Valid LoginDTO loginDTO) {
+        return ResponseEntity.ok(userService.login(loginDTO));
     }
+    @GetMapping("/me")
+    public ResponseEntity<UserDTO> getCurrentUser() {
+        log.info("Endpoint /me called");
+        UserDTO userDTO = userService.getCurrentUser();
+        log.info("UserDTO returned: {}", userDTO);
+        return ResponseEntity.ok(userDTO);
+    }
+
 }

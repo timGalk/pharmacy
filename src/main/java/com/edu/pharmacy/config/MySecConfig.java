@@ -8,17 +8,17 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-@Configuration
-public class MySecConfig {
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests((authz) -> authz
-                        .anyRequest().anonymous()
-                )
-                .httpBasic(withDefaults());
-        return http.build();
-    }
-
-}
+//@Configuration
+//public class MySecConfig {
+//
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http
+//                .authorizeHttpRequests((authz) -> authz
+//                        .anyRequest().anonymous()
+//                )
+//                .httpBasic(withDefaults());
+//        return http.build();
+//    }
+//
+//}

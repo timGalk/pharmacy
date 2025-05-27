@@ -8,11 +8,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {
-    UserDTO loadUserByEmail(String email);
 
     UserDTO register(UserCreateDTO userCreateDTO);
     UserDTO updateUser(UserDTO userDTO);
     UserDTO getCurrentUser();
 
-//    TokenDTO login(LoginDTO loginDTO);
+    TokenDTO login(LoginDTO loginDTO);
 }
