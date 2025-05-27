@@ -1,10 +1,10 @@
 package com.edu.pharmacy.service;
 
-import com.edu.pharmacy.repo.MedicineEntity;
-import com.edu.pharmacy.repo.MedicineRepository;
-import com.edu.pharmacy.service.DTO.MedicineCreateDTO;
-import com.edu.pharmacy.service.DTO.MedicineDTO;
-import com.edu.pharmacy.service.mapper.MedicineMapper;
+import com.edu.pharmacy.entity.MedicineEntity;
+import com.edu.pharmacy.repository.MedicineRepository;
+import com.edu.pharmacy.DTO.medicine.MedicineCreateDTO;
+import com.edu.pharmacy.DTO.medicine.MedicineDTO;
+import com.edu.pharmacy.mapper.MedicineMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

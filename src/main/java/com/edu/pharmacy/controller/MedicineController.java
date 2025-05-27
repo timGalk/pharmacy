@@ -1,7 +1,7 @@
 package com.edu.pharmacy.controller;
 
-import com.edu.pharmacy.service.DTO.MedicineCreateDTO;
-import com.edu.pharmacy.service.DTO.MedicineDTO;
+import com.edu.pharmacy.DTO.medicine.MedicineCreateDTO;
+import com.edu.pharmacy.DTO.medicine.MedicineDTO;
 import com.edu.pharmacy.service.MedicineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
