@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 
 @Component
-@Slf4j // Add Lombok for logging
+@Slf4j
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
 
@@ -54,7 +54,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 log.debug("Set authentication for user: {}", authUser.userId());
+
             }
+            filterChain.doFilter(request, response);
 
         } catch (Exception e) {
             filterChain.doFilter(request, response);
