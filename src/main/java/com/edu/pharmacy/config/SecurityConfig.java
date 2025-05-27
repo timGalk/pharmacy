@@ -1,7 +1,5 @@
 package com.edu.pharmacy.config;
 
-//import com.edu.pharmacy.security.filter.JwtAuthFilter;
-
 import com.edu.pharmacy.security.filter.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

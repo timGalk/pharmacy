@@ -34,5 +34,8 @@ public class AuthController {
         log.info("UserDTO returned: {}", userDTO);
         return ResponseEntity.ok(userDTO);
     }
+    @DeleteMapping("/deleteProfile")
+    public void deleteProfile() {
+    }
 
 }
