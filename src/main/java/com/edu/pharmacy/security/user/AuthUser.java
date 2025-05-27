@@ -1,9 +1,8 @@
 package com.edu.pharmacy.security.user;
 
 import com.edu.pharmacy.common.Role;
-import lombok.Data;
 
-import java.util.List;
+import java.util.Set;
 
 
-public record AuthUser(Long userId, List<Role> roles) {}
+public record AuthUser(Long userId, Set<Role> roles) {}

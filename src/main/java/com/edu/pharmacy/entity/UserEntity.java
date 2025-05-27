@@ -2,9 +2,7 @@ package com.edu.pharmacy.entity;
 
 import com.edu.pharmacy.common.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.ZonedDateTime;
 import java.util.Set;
@@ -16,39 +14,42 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @Column(nullable = false)
     private String firstName;
-
 
     @Column(nullable = false)
     private String lastName;
 
-
     @Column
     private String address;
-
 
     @Column(nullable = false)
     private int age;
 
-
     @Column(unique = true, nullable = false)
     private String email;
 
-
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @Column(nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private String phoneNumber;
+
+
     @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    private Boolean active;
+    @Column(nullable = false)
+    private Boolean active = true;
 
     private ZonedDateTime createdAt;
     private ZonedDateTime updatedAt;
@@ -63,5 +64,4 @@ public class UserEntity {
     private void onPreUpdate() {
         updatedAt = ZonedDateTime.now();
     }
-
 }

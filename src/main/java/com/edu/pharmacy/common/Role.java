@@ -10,13 +10,5 @@ package com.edu.pharmacy.common;
  * </ul>
  */
 public enum Role {
-    /**
-     * Administrator role with elevated privileges.
-     */
-    ROLE_ADMIN,
-
-    /**
-     * Standard user role with limited access.
-     */
-    ROLE_USER,
+    USER, ADMIN, PHARMACIST;
 }
