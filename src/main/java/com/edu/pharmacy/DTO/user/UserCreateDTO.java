@@ -49,7 +49,4 @@ public class UserCreateDTO {
     @NotNull(message = "Roles must not be null")
     @Size(min = 1, message = "User must have at least one role")
     private Set<@NotNull(message = "Role must not be null") String> roles;
-
-    @NotNull(message = "Active status must be specified")
-    private Boolean active;
 }

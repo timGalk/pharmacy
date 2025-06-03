@@ -50,8 +50,9 @@ public class UserServiceImpl implements UserService {
         userEntity.setRoles(userCreateDTO.getRoles().stream()
                 .map(Role::valueOf)
                 .collect(Collectors.toSet()));
-        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        userEntity.setPassword(passwordEncoder.encode(userCreateDTO.getPassword()));
         userEntity.setCreatedAt(ZonedDateTime.now());
+        userEntity.setActive(true);
         userRepository.save(userEntity);
         return userMapper.toDto(userEntity);
     }
@@ -88,8 +89,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public TokenDTO login(LoginDTO loginDTO) {
-        UserEntity userEntity = userRepository.findByEmail(loginDTO.mail())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + loginDTO.mail()));
+        UserEntity userEntity = userRepository.findByEmail(loginDTO.email())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + loginDTO.email()));
 
         if (!passwordEncoder.matches(loginDTO.password(), userEntity.getPassword())) {
             throw new RuntimeException("Invalid password");

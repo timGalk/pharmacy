@@ -77,8 +77,6 @@ public class UserMapper {
             entity.setRoles(new HashSet<>());
         }
 
-        entity.setActive(createDTO.getActive());
-
         // Optional: set timestamps manually or rely on @PrePersist
         entity.setCreatedAt(ZonedDateTime.now());
         entity.setUpdatedAt(ZonedDateTime.now());
