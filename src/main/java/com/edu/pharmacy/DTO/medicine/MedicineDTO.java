@@ -45,4 +45,6 @@ package com.edu.pharmacy.DTO.medicine;
          */
         private LocalDate expirationDate;
 
+        private String image;
+
     }

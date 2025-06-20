@@ -10,7 +10,8 @@ public class MedicineMapper {
     public MedicineEntity convert(MedicineDTO medicine) {
         return new MedicineEntity(medicine.getId(),
                 medicine.getName(), medicine.getDescription(),
-                medicine.getPrice(), medicine.getStockQuantity(), medicine.getExpirationDate());
+                medicine.getPrice(), medicine.getStockQuantity(), medicine.getExpirationDate()
+        , medicine.getImage());
     }
 
     public MedicineDTO convert(MedicineEntity medicineEntity) {
@@ -20,7 +21,9 @@ public class MedicineMapper {
                 medicineEntity.getDescription(),
                 medicineEntity.getPrice(),
                 medicineEntity.getStockQuantity(),
-                medicineEntity.getExpirationDate()
+                medicineEntity.getExpirationDate(),
+                medicineEntity.getImage()
+
 
         );
     }

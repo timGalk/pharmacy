@@ -47,5 +47,11 @@ public class MedicineCreateDTO {
      * The expiration date of the medicine.
      */
     private LocalDate expirationDate;
+    /**
+     * The image URL of the medicine.
+     * Must be a valid URL format.
+     */
+    @Size(max = 255, message = "Image URL must not exceed 255 characters")
+    private String image;
 
 }

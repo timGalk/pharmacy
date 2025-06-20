@@ -32,6 +32,7 @@ public class MedicineEntity {
     private int stockQuantity;
 
     private LocalDate expirationDate;
+    private String image;
 }
 
 
