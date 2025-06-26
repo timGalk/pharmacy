@@ -2,7 +2,10 @@ package com.edu.pharmacy.service;
 
 import com.edu.pharmacy.DTO.cart.CartDTO;
 import com.edu.pharmacy.DTO.cart.CartItemDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface CartService {
     /**
      * Retrieves the cart for the current user.
