@@ -5,12 +5,14 @@ import com.edu.pharmacy.repository.MedicineRepository;
 import com.edu.pharmacy.DTO.medicine.MedicineCreateDTO;
 import com.edu.pharmacy.DTO.medicine.MedicineDTO;
 import com.edu.pharmacy.mapper.MedicineMapper;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MedicineServiceImpl implements MedicineService {
@@ -35,6 +37,15 @@ public class MedicineServiceImpl implements MedicineService {
                 .stream()
                 .map(medicineMapper::convert)
                 .toList();
+    }
+
+    @Override
+    public void deleteMedicine(Long id) {
+        if (!medicineRepository.existsById(id)) {
+            throw new EntityNotFoundException("Medicine with id " + id + " not found");
+        }
+        medicineRepository.deleteById(id);
+        log.info("Medicine with id {} successfully deleted", id);
     }
 
     @Override

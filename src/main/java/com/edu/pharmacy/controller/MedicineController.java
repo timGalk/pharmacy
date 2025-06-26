@@ -31,5 +31,10 @@ public class MedicineController {
         return medicineService.getAllMedicines();
 
     }
+    @DeleteMapping
+    public void deleteMedicine(@RequestParam Long id) {
+        medicineService.deleteMedicine(id);
+    }
+
 
 }
