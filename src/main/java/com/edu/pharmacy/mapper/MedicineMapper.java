@@ -35,6 +35,7 @@ public class MedicineMapper {
                 .price(medicine.getPrice())
                 .stockQuantity(medicine.getQuantity())
                 .expirationDate(medicine.getExpirationDate())
+                .image(medicine.getImage())  // Added missing image field
                 .build();
     }
 

@@ -33,10 +33,10 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOriginPattern("*"); // Или явно: "http://localhost:3000"
+        configuration.addAllowedOriginPattern("*");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
-        configuration.setAllowCredentials(true); // если нужен Authorization header
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -56,7 +56,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/login", "/api/login/").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/me").authenticated()
-                        .requestMatchers("/api/medicines/**").hasAnyRole("ADMIN", "PHARMACIST")
+                        .requestMatchers("/api/medicines/**").hasAnyAuthority("ADMIN", "PHARMACIST")
                         .requestMatchers("/test/public").permitAll()
                         .anyRequest().authenticated()
                 )
