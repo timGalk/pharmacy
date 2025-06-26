@@ -28,18 +28,19 @@ public class CartServiceImpl implements CartService {
     private final CartItemRepository cartItemRepository;
     private final MedicineRepository medicineRepository;
     private final CartMapper cartMapper;
+    private final CartSecurityService cartSecurityService;
 
     @Override
     @Transactional
     public CartDTO getCart(Long id) {
-        CartEntity cartEntity = cartRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Cart with id " + id + " not found"));
+        CartEntity cartEntity = cartSecurityService.checkCartAccess(id);
         return cartMapper.convert(cartEntity);
     }
 
     @Override
     @Transactional
     public CartDTO getCartByUserId(Long userId) {
+        cartSecurityService.checkUserCartAccess(userId);
         CartEntity cartEntity = cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Cart for user " + userId + " not found"));
         return cartMapper.convert(cartEntity);
@@ -48,6 +49,8 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public CartDTO createCart(Long userId) {
+        cartSecurityService.checkUserCartAccess(userId);
+        
         // Check if cart already exists for this user
         Optional<CartEntity> existingCart = cartRepository.findByUserId(userId);
         if (existingCart.isPresent()) {
@@ -67,9 +70,8 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public CartDTO addItemToCart(CartItemCreateDTO cartItemCreateDTO) {
-        // Find the cart
-        CartEntity cart = cartRepository.findById(cartItemCreateDTO.getCartId())
-                .orElseThrow(() -> new EntityNotFoundException("Cart with id " + cartItemCreateDTO.getCartId() + " not found"));
+        // Find the cart and check access
+        CartEntity cart = cartSecurityService.checkCartAccess(cartItemCreateDTO.getCartId());
 
         // Find the medicine
         MedicineEntity medicine = medicineRepository.findById(cartItemCreateDTO.getMedicineId())
@@ -109,6 +111,9 @@ public class CartServiceImpl implements CartService {
         CartItemEntity cartItem = cartItemRepository.findById(itemId)
                 .orElseThrow(() -> new EntityNotFoundException("Cart item with id " + itemId + " not found"));
 
+        // Check access to the cart that contains this item
+        cartSecurityService.checkCartAccess(cartItem.getCart().getId());
+
         cartItem.setQuantity(cartItemUpdateDTO.getQuantity());
         cartItemRepository.save(cartItem);
         
@@ -122,6 +127,9 @@ public class CartServiceImpl implements CartService {
         CartItemEntity cartItem = cartItemRepository.findById(itemId)
                 .orElseThrow(() -> new EntityNotFoundException("Cart item with id " + itemId + " not found"));
 
+        // Check access to the cart that contains this item
+        cartSecurityService.checkCartAccess(cartItem.getCart().getId());
+
         CartEntity cart = cartItem.getCart();
         cart.getItems().remove(cartItem);
         cartItemRepository.delete(cartItem);
@@ -134,8 +142,7 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public CartDTO clearCart(Long cartId) {
-        CartEntity cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new EntityNotFoundException("Cart with id " + cartId + " not found"));
+        CartEntity cart = cartSecurityService.checkCartAccess(cartId);
 
         cartItemRepository.deleteAll(cart.getItems());
         cart.getItems().clear();

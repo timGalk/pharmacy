@@ -56,7 +56,27 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/login", "/api/login/").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/me").authenticated()
+                        
+                        // Medicine management - Admin and Pharmacist only
                         .requestMatchers("/api/medicines/**").hasAnyAuthority("ADMIN", "PHARMACIST")
+                        
+                        // Cart operations - Only USER role can perform cart operations
+                        .requestMatchers(HttpMethod.GET, "/api/carts/**").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.POST, "/api/carts/**").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.PATCH, "/api/carts/**").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/carts/**").hasAuthority("USER")
+                        
+                        // Order operations - Only USER role can create orders
+                        .requestMatchers(HttpMethod.POST, "/api/orders").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.PATCH, "/api/orders/*/status").hasAnyAuthority("ADMIN", "PHARMACIST")
+                        .requestMatchers(HttpMethod.POST, "/api/orders/*/cancel").hasAnyAuthority("ADMIN", "PHARMACIST")
+                        
+                        // Order viewing - Admin can see all orders, Pharmacist can see orders, User can see their own
+                        .requestMatchers(HttpMethod.GET, "/api/orders").hasAnyAuthority("ADMIN", "PHARMACIST")
+                        .requestMatchers(HttpMethod.GET, "/api/orders/status/*").hasAnyAuthority("ADMIN", "PHARMACIST")
+                        .requestMatchers(HttpMethod.GET, "/api/orders/user/*").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.GET, "/api/orders/*").hasAnyAuthority("ADMIN", "PHARMACIST", "USER")
+                        
                         .requestMatchers("/test/public").permitAll()
                         .anyRequest().authenticated()
                 )
