@@ -2,6 +2,7 @@ package com.edu.pharmacy.controller;
 
 import com.edu.pharmacy.DTO.medicine.MedicineCreateDTO;
 import com.edu.pharmacy.DTO.medicine.MedicineDTO;
+import com.edu.pharmacy.DTO.medicine.MedicineUpdateDTO;
 import com.edu.pharmacy.service.MedicineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -35,6 +36,12 @@ public class MedicineController {
     public void deleteMedicine(@RequestParam Long id) {
         medicineService.deleteMedicine(id);
     }
+
+    @PatchMapping("/{id}")
+    public MedicineDTO patchMedicine(@PathVariable Long id, @RequestBody MedicineUpdateDTO dto) {
+        return medicineService.updateMedicine(id, dto); // or patchMedicine
+    }
+
 
 
 }

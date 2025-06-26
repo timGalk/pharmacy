@@ -1,5 +1,6 @@
 package com.edu.pharmacy.mapper;
 
+import com.edu.pharmacy.DTO.medicine.MedicineUpdateDTO;
 import com.edu.pharmacy.entity.MedicineEntity;
 import com.edu.pharmacy.DTO.medicine.MedicineCreateDTO;
 import com.edu.pharmacy.DTO.medicine.MedicineDTO;
@@ -38,5 +39,14 @@ public class MedicineMapper {
                 .image(medicine.getImage())  // Added missing image field
                 .build();
     }
+    public void updateEntityFromDto(MedicineUpdateDTO dto, MedicineEntity entity) {
+        entity.setName(dto.getName());
+        entity.setDescription(dto.getDescription());
+        entity.setPrice(dto.getPrice());
+        entity.setStockQuantity(dto.getQuantity());
+        entity.setExpirationDate(dto.getExpirationDate());
+        entity.setImage(dto.getImage());
+    }
+
 
 }

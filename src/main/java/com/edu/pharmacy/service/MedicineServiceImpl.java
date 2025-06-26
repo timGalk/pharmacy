@@ -1,5 +1,6 @@
 package com.edu.pharmacy.service;
 
+import com.edu.pharmacy.DTO.medicine.MedicineUpdateDTO;
 import com.edu.pharmacy.entity.MedicineEntity;
 import com.edu.pharmacy.repository.MedicineRepository;
 import com.edu.pharmacy.DTO.medicine.MedicineCreateDTO;
@@ -47,6 +48,21 @@ public class MedicineServiceImpl implements MedicineService {
         medicineRepository.deleteById(id);
         log.info("Medicine with id {} successfully deleted", id);
     }
+
+    @Override
+    public MedicineDTO updateMedicine(Long id, MedicineUpdateDTO medicine) {
+        MedicineEntity existingMedicine = medicineRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Medicine with id " + id + " not found"));
+
+        medicineMapper.updateEntityFromDto(medicine, existingMedicine);
+
+        medicineRepository.save(existingMedicine);
+        log.info("Medicine with id {} successfully updated", id);
+
+        return medicineMapper.convert(existingMedicine);
+    }
+
+
 
     @Override
     @Transactional
