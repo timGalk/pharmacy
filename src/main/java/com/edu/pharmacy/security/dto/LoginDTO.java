@@ -1,3 +1,3 @@
 package com.edu.pharmacy.security.dto;
 
-public record LoginDTO (String mail, String password) { }
+public record LoginDTO (String email, String password) { }

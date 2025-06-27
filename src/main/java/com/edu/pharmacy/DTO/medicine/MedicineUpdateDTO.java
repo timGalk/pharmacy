@@ -7,13 +7,9 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/**
- * Data Transfer Object (DTO) for creating a new medicine.
- * This class is used to encapsulate the data required to create a new medicine entity.
- * It uses Lombok annotations for boilerplate code generation and Jakarta Validation annotations for input validation.
- */
+
 @Data
-public class MedicineCreateDTO {
+public class MedicineUpdateDTO {
 
     /**
      * The name of the medicine.
@@ -53,5 +49,6 @@ public class MedicineCreateDTO {
      */
     @Size(max = 255, message = "Image URL must not exceed 255 characters")
     private String image;
+
 
 }

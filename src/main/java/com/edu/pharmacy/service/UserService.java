@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {
+    UserDTO getUser(Long id);
 
     UserDTO register(UserCreateDTO userCreateDTO);
     UserDTO updateUser(UserDTO userDTO);

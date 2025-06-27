@@ -35,6 +35,13 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    public UserDTO getUser(Long id) {
+        UserEntity userEntity = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User wasn't found"));
+        return userMapper.toDto(userEntity);
+    }
+
+    @Override
     @Transactional
     public UserDTO register(UserCreateDTO userCreateDTO) {
         UserEntity userEntity = userMapper.fromCreateDto(userCreateDTO);
@@ -88,8 +95,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public TokenDTO login(LoginDTO loginDTO) {
-        UserEntity userEntity = userRepository.findByEmail(loginDTO.mail())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + loginDTO.mail()));
+        UserEntity userEntity = userRepository.findByEmail(loginDTO.email())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + loginDTO.email()));
 
         if (!passwordEncoder.matches(loginDTO.password(), userEntity.getPassword())) {
             throw new RuntimeException("Invalid password");
