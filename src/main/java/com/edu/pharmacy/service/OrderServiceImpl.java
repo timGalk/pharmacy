@@ -9,6 +9,7 @@ import com.edu.pharmacy.mapper.OrderMapper;
 import com.edu.pharmacy.repository.MedicineRepository;
 import com.edu.pharmacy.repository.OrderItemRepository;
 import com.edu.pharmacy.repository.OrderRepository;
+import com.edu.pharmacy.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,7 @@ public class OrderServiceImpl implements OrderService {
     private final CartService cartService;
     private final MedicineRepository medicineRepository;
     private final OrderSecurityService orderSecurityService;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
@@ -39,6 +41,32 @@ public class OrderServiceImpl implements OrderService {
         
         if (cart.getItemList().isEmpty()) {
             throw new RuntimeException("Cannot create order from empty cart");
+        }
+
+        // Get user information to auto-populate missing fields
+        UserEntity user = userRepository.findById(cart.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        // Auto-populate missing fields from user profile
+        String customerName = orderCreateDTO.getCustomerName();
+        if (customerName == null || customerName.trim().isEmpty()) {
+            customerName = user.getFirstName() + " " + user.getLastName();
+        }
+
+        String shippingAddress = orderCreateDTO.getShippingAddress();
+        if (shippingAddress == null || shippingAddress.trim().isEmpty()) {
+            shippingAddress = user.getAddress();
+            if (shippingAddress == null || shippingAddress.trim().isEmpty()) {
+                throw new RuntimeException("Shipping address is required. Please provide it in the request or update your profile.");
+            }
+        }
+
+        String phoneNumber = orderCreateDTO.getPhoneNumber();
+        if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
+            phoneNumber = user.getPhoneNumber();
+            if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
+                throw new RuntimeException("Phone number is required. Please provide it in the request or update your profile.");
+            }
         }
 
         // Calculate total amount
@@ -51,9 +79,9 @@ public class OrderServiceImpl implements OrderService {
                 .userId(cart.getUserId())
                 .status(OrderStatus.PENDING)
                 .totalAmount(totalAmount)
-                .shippingAddress(orderCreateDTO.getShippingAddress())
-                .phoneNumber(orderCreateDTO.getPhoneNumber())
-                .customerName(orderCreateDTO.getCustomerName())
+                .shippingAddress(shippingAddress)
+                .phoneNumber(phoneNumber)
+                .customerName(customerName)
                 .items(new ArrayList<>())
                 .build();
 
@@ -93,7 +121,8 @@ public class OrderServiceImpl implements OrderService {
         // Clear the cart after successful order creation
         cartService.clearCart(orderCreateDTO.getCartId());
 
-        log.info("Created order {} from cart {} for user {}", savedOrder.getId(), orderCreateDTO.getCartId(), cart.getUserId());
+        log.info("Created order {} from cart {} for user {} with auto-populated info", 
+                savedOrder.getId(), orderCreateDTO.getCartId(), cart.getUserId());
         return orderMapper.convert(savedOrder);
     }
 
