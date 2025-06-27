@@ -4,10 +4,12 @@ import com.edu.pharmacy.DTO.order.OrderCreateDTO;
 import com.edu.pharmacy.DTO.order.OrderDTO;
 import com.edu.pharmacy.DTO.order.OrderUpdateDTO;
 import com.edu.pharmacy.entity.OrderStatus;
+import com.edu.pharmacy.security.user.AuthUser;
 import com.edu.pharmacy.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +41,17 @@ public class OrderController {
     }
 
     /**
-     * Get all orders for a user
+     * Get orders for the currently authenticated user
+     */
+    @GetMapping("/user")
+    public ResponseEntity<List<OrderDTO>> getCurrentUserOrders(Authentication authentication) {
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        List<OrderDTO> orders = orderService.getOrdersByUserId(authUser.userId());
+        return ResponseEntity.ok(orders);
+    }
+
+    /**
+     * Get all orders for a specific user (admin/pharmacist only)
      */
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<OrderDTO>> getOrdersByUserId(@PathVariable Long userId) {

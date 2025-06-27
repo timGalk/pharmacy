@@ -74,6 +74,7 @@ public class SecurityConfig {
                         // Order viewing - Admin can see all orders, Pharmacist can see orders, User can see their own
                         .requestMatchers(HttpMethod.GET, "/api/orders").hasAnyAuthority("ADMIN", "PHARMACIST")
                         .requestMatchers(HttpMethod.GET, "/api/orders/status/*").hasAnyAuthority("ADMIN", "PHARMACIST")
+                        .requestMatchers(HttpMethod.GET, "/api/orders/user").hasAuthority("USER")
                         .requestMatchers(HttpMethod.GET, "/api/orders/user/*").hasAuthority("USER")
                         .requestMatchers(HttpMethod.GET, "/api/orders/*").hasAnyAuthority("ADMIN", "PHARMACIST", "USER")
                         

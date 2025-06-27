@@ -108,7 +108,34 @@ Retrieves all orders for a specific user.
 ]
 ```
 
-### 4. Get Orders by Status
+### 4. Get Current User's Orders
+**GET** `/api/orders/user`
+
+Retrieves all orders for the currently authenticated user.
+
+**Authentication:** Required (JWT token)
+
+**Response:**
+```json
+[
+  {
+    "id": 1,
+    "userId": 123,
+    "status": "PENDING",
+    "totalAmount": 25.97,
+    // ... other order fields
+  },
+  {
+    "id": 2,
+    "userId": 123,
+    "status": "DELIVERED",
+    "totalAmount": 15.50,
+    // ... other order fields
+  }
+]
+```
+
+### 5. Get Orders by Status
 **GET** `/api/orders/status/{status}`
 
 Retrieves all orders with a specific status.
@@ -118,14 +145,14 @@ Retrieves all orders with a specific status.
 
 **Response:** Array of Order DTOs
 
-### 5. Get All Orders (Admin)
+### 6. Get All Orders (Admin)
 **GET** `/api/orders`
 
 Retrieves all orders in the system (typically for admin use).
 
 **Response:** Array of Order DTOs
 
-### 6. Update Order Status
+### 7. Update Order Status
 **PATCH** `/api/orders/{orderId}/status`
 
 Updates the status of an order. When cancelling an order, stock quantities are automatically restored.
@@ -145,7 +172,7 @@ Updates the status of an order. When cancelling an order, stock quantities are a
 
 **Response:** Updated Order DTO
 
-### 7. Cancel Order
+### 8. Cancel Order
 **POST** `/api/orders/{orderId}/cancel`
 
 Cancels an order and restores stock quantities.
@@ -251,7 +278,12 @@ Cancels an order and restores stock quantities.
    GET /api/orders/1
    ```
 
-4. **Update order status (admin):**
+4. **View current user's orders:**
+   ```bash
+   GET /api/orders/user
+   ```
+
+5. **Update order status (admin):**
    ```bash
    PATCH /api/orders/1/status
    Content-Type: application/json
@@ -261,12 +293,12 @@ Cancels an order and restores stock quantities.
    }
    ```
 
-5. **View user's orders:**
+6. **View user's orders:**
    ```bash
    GET /api/orders/user/123
    ```
 
-6. **Cancel order (if needed):**
+7. **Cancel order (if needed):**
    ```bash
    POST /api/orders/1/cancel
    ```
