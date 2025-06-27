@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping(value = "/id")
+    @GetMapping(value = "/{id}")
     public UserDTO getUser(@PathVariable Long id) {
         return userService.getUser(id);
     }
